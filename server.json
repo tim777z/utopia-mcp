@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.tim777z/utopia-megastore",
+  "description": "Utopia Megastore: machine-purchasable catalog of real tech and desk gear. Browse and search products, build a cross-subsidised set within a budget, negotiate down to a margin floor, validate multi-agent payment splits, and create a PayPal checkout link. Orders are dropshipped via CJ with USPS last-mile.",
+  "version": "1.0.0",
+  "websiteUrl": "https://utopia-megastore.pages.dev/",
+  "repository": {
+    "url": "https://github.com/tim777z/utopia-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://utopia-orders.precogsecurity.workers.dev/mcp"
+    }
+  ]
+}
