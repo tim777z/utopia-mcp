@@ -49,6 +49,46 @@ create_checkout                   ->  returns pay_url; human or agent approves p
 
 Payment capture auto-forwards the order to CJ Dropshipping (`logisticName: USPS`).
 
+## Verify it yourself
+
+Every claim above is checkable in one command. No install, no API key, Node 18+.
+
+```bash
+curl -sO https://raw.githubusercontent.com/tim777z/utopia-mcp/main/conformance/mcp-conformance.mjs
+node mcp-conformance.mjs --url https://utopia-orders.precogsecurity.workers.dev/mcp
+```
+
+Real output against the live endpoint, 2026-11-10:
+
+```text
+MCP conformance: https://utopia-orders.precogsecurity.workers.dev/mcp
+
+  [PASS] endpoint reachable â€” HTTP 200
+  [PASS] initialize returns HTTP 200 â€” got 200
+  [PASS] response is JSON (or SSE carrying JSON) â€” application/json
+  [PASS] jsonrpc field is "2.0" â€” 2.0
+  [PASS] initialize has no error object â€” ok
+  [PASS] initialize returns protocolVersion â€” 2024-11-05
+  [PASS] initialize returns serverInfo.name â€” utopia-megastore
+  [PASS] initialize advertises tools capability â€” {"tools":{"listChanged":false}}
+  [PASS] tools/list returns HTTP 200 â€” got 200
+  [PASS] tools/list has no error object â€” ok
+  [PASS] tools/list returns an array â€” 6 tools
+  [PASS] every tool has name, description and object inputSchema â€” 6/6 valid
+  [PASS] every required field is declared in properties â€” ok
+  [PASS] no tool is both readOnly and destructive â€” ok
+  [PASS] tool names unique and MCP-conventional â€” 6 unique
+  [PASS] unknown tool returns a JSON-RPC error (no crash) â€” HTTP 200, error surfaced
+
+16/16 checks passed
+tools: list_products, search_products, suggest_bundle, negotiate_price, validate_split, create_checkout
+```
+
+The checker is not a rubber stamp. `conformance/selftest-conformance.mjs` starts a mock server with
+four planted defects (missing inputSchema, a required field absent from `properties`, contradictory
+`readOnly`/`destructive` annotations, a duplicate tool name, and a silent success for an unknown
+tool) and asserts every one is caught, then runs the same checker against this live endpoint. If the
+checker ever stopped detecting defects, that self-test fails.
 ## Notes on scope
 
 - This server never charges a card and never stores payment credentials. It returns a PayPal link.
