@@ -84,6 +84,10 @@ MCP conformance: https://utopia-orders.precogsecurity.workers.dev/mcp
 tools: list_products, search_products, suggest_bundle, negotiate_price, validate_split, create_checkout
 ```
 
+The checker requests `2024-11-05`, which is why that version appears above. This server negotiates:
+it echoes any known protocol version the client asks for and falls back to `2025-06-18` otherwise
+(verified 2026-11-10 â€” requesting `2025-06-18` returns `2025-06-18`; requesting `2099-01-01` returns
+`2025-06-18`).
 The checker is not a rubber stamp. `conformance/selftest-conformance.mjs` starts a mock server with
 four planted defects (missing inputSchema, a required field absent from `properties`, contradictory
 `readOnly`/`destructive` annotations, a duplicate tool name, and a silent success for an unknown
